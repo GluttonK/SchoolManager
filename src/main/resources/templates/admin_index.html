@@ -87,6 +87,14 @@
         <div class="container">
             <div class="page-header">
                 <h4>选课中心</h4>
+                <div class="p-2 text-right">
+                <button data-toggle="modal" data-target="#insertCourse"
+                        @click="current_course = course.courseId"
+                        ref="btnSelect" class="btn nav-link bg-success-bright">
+                    <i aria-hidden="true"
+                    >新建课程</i>
+                </button>
+                </div>
 				
 					<div>
 						<div class="table-responsive">
@@ -148,21 +156,21 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">课程名称</span>
                         </div>
-                        <input type="text" v-model="course_name" class="form-control" id="usr" name="username">
+                        <input type="text" v-model="course_name" class="form-control"  name="username">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">课程学分</span>
                         </div>
-                        <input type="text" v-model="course_score" class="form-control" id="usr" name="username">
+                        <input type="text" v-model="course_score" class="form-control"  name="username">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">授课教师id</span>
                         </div>
-                        <input type="text" v-model="teacher_id" class="form-control" id="usr" name="username">
+                        <input type="text" v-model="teacher_id" class="form-control"  name="username">
                     </div>
 
                 </div>
@@ -173,6 +181,63 @@
                         保存
                     </button>
                     <button type="button" class="btn btn-secondary " data-dismiss="modal" @click="current_course = null">取消</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<!--新建课程模态框-->
+    <div class="modal fade" id="insertCourse">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h3 class="modal-title">新建课程</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+
+                <div class="modal-body">
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">课程id</span>
+                        </div>
+                        <input type="text" v-model="course_id" class="form-control"  name="username">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">课程名称</span>
+                        </div>
+                        <input type="text" v-model="course_name" class="form-control"  name="username">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">课程学分</span>
+                        </div>
+                        <input type="text" v-model="course_score" class="form-control"  name="username">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">授课教师id</span>
+                        </div>
+                        <input type="text" v-model="teacher_id" class="form-control"  name="username">
+                    </div>
+
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="insertCourse">
+                        保存
+                    </button>
+                    <button type="button" class="btn btn-secondary " data-dismiss="modal" @click="">取消</button>
                 </div>
 
             </div>
@@ -194,6 +259,7 @@
 		data:{
 			courses: {},
             course:{},
+            course_id:null,
             course_name:null,
             course_score:null,
             teacher_id:null,
@@ -228,16 +294,17 @@
 						});
 			},
 
-			insertSc:function(){
+			insertCourse:function(){
 				const formdata=new FormData();
-				formdata.append("studentName",this.studentName);
-				formdata.append("courseName",this.courseName);
-				formdata.append("teacherName",this.teacherName);
+				formdata.append("course_id",this.course_id);
+				formdata.append("course_name",this.course_name);
+				formdata.append("course_score",this.course_score);
+                formdata.append("teacher_id",this.teacher_id);
 				axios
-						.post('http://localhost:8080/student_index/course_selection/insert',formdata)
+						.post('http://localhost:8080/admin_index/insert',formdata)
 						.then(response =>{
-							this.$refs.btnSelect.click();
-							alert("选课成功！");
+							//this.$refs.btnSelect.click();
+							alert("新建成功！");
 							this.getAllCourse();
 						})
 						.catch(function (error) { // 请求失败处理

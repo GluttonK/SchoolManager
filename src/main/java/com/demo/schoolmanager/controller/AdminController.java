@@ -63,6 +63,33 @@ public class AdminController {
         return JSONObject.toJSONString(resultMap);
     }
 
+    @RequestMapping("/admin_index/insert")
+    public @ResponseBody
+    String insert(Integer course_id,String course_name,Integer course_score,Integer teacher_id) {
+
+
+        System.out.println(course_id);
+        System.out.println(course_name);
+        System.out.println(course_score);
+        System.out.println(teacher_id);
+        int result = adminService.insert(course_id,course_name,course_score,teacher_id);
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        switch (result) {
+            case 0:
+                resultMap.put("info", "产品名称重复！");
+                break;
+            case 1:
+                resultMap.put("info", "修改成功！");
+                break;
+            default:
+                resultMap.put("info", "修改失败！");
+        }
+
+        return JSONObject.toJSONString(resultMap);
+    }
+
     @RequestMapping("/admin_index/delete")
     public @ResponseBody
     String delete(Integer course_id) {

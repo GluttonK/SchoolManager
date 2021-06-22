@@ -29,6 +29,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public int insert(Integer course_id, String course_name, Integer course_score, Integer teacher_id) {
+        Course course = new Course();
+        course.setCourseId(course_id);
+        course.setCourseName(course_name);
+        course.setCourseScore(course_score);
+        course.setTeacherId(teacher_id);
+        course.setTeacherName(teacherMapper.selectByPrimaryKey(teacher_id).getTeacherName());
+
+        return courseMapper.insert(course);
+    }
+
+    @Override
     public int create(Course course) {
         return courseMapper.insert(course);
     }
