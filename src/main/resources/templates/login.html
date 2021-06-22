@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+
+    <!-- vue ajax -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/media/image/favicon.png"/>
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="assets/css/app.min.css" type="text/css">
+	
+</head>
+<body class="form-membership">
+
+
+
+<div class="form-wrapper">
+
+    <!-- logo -->
+    <div id="logo">
+        <img class="logo" src="assets/media/image/logo.png" alt="image">
+        <img class="logo-dark" src="assets/media/image/logo-dark.png" alt="image">
+    </div>
+    <!-- ./ logo -->
+
+    <h5>Sign in</h5>
+    <div id="app">
+    <!-- form -->
+
+<!--        <button class="btn btn-primary btn-block" @click="admin_login">管理员登录</button>-->
+<!--        <button class="btn btn-primary btn-block" @click="student_login">学生登录</button>-->
+<!--        <button class="btn btn-primary btn-block" @click="teacher_login">教师登录</button>-->
+        <a href="/to_admin_login">管理员登录</a>
+        <hr>
+        <a href="/to_student_login">学生登录</a>
+        <hr>
+        <a href="/to_teacher_login">教师登录</a>
+        <hr>
+
+    <!-- ./ form -->
+    </div>
+
+</div>
+
+<!-- Plugin scripts -->
+<script src="vendors/bundle.js"></script>
+
+<!-- App scripts -->
+<script src="assets/js/app.min.js"></script>
+</body>
+</html>
+
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            username: null,
+            password: null,
+            email:null,
+        },
+        methods: {
+            admin_login: function () {
+                window.location = "http://localhost:8080/admin_login";
+            },
+            student_login: function () {
+                window.location = "http://localhost:8080/student_login";
+            },
+            teaacher_login: function () {
+                window.location = "http://localhost:8080/teaacher_login";
+            }
+        },
+    })
+</script>

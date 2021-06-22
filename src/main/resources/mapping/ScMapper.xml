@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.schoolmanager.dao.ScMapper" >
+  <resultMap id="BaseResultMap" type="com.demo.schoolmanager.entity.Sc" >
+    <id column="student_id" property="studentId" jdbcType="INTEGER" />
+    <id column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="student_grade" property="studentGrade" jdbcType="INTEGER" />
+    <result column="course_score" property="courseScore" jdbcType="VARCHAR" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+    <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    student_id, course_id, teacher_id, student_grade, course_score, student_name, course_name, 
+    teacher_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from sc
+    where student_id = #{studentId,jdbcType=INTEGER}
+      and course_id = #{courseId,jdbcType=INTEGER}
+  </select>
+<!--  新增-->
+  <select id="selectByStudentId" resultMap="BaseResultMap" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    select
+    <include refid="Base_Column_List" />
+    from sc
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTeacherId" resultMap="BaseResultMap" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    select
+    <include refid="Base_Column_List" />
+    from sc
+    where teacher_id = #{teacher_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCourseIdAndTeacherId" resultMap="BaseResultMap" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    select
+    <include refid="Base_Column_List" />
+    from sc
+    where teacher_id = #{teacher_id,jdbcType=INTEGER}
+      and course_id = #{course_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCourseId" resultMap="BaseResultMap" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    select
+    <include refid="Base_Column_List" />
+    from sc
+    where course_id = #{course_id,jdbcType=INTEGER}
+  </select>
+<!--  新增end-->
+  <delete id="deleteByPrimaryKey" parameterType="com.demo.schoolmanager.entity.ScKey" >
+    delete from sc
+    where student_id = #{studentId,jdbcType=INTEGER}
+      and course_id = #{courseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.demo.schoolmanager.entity.Sc" >
+    insert into sc (student_id, course_id, teacher_id, 
+      student_grade, course_score, student_name, 
+      course_name, teacher_name)
+    values (#{studentId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, 
+      #{studentGrade,jdbcType=INTEGER}, #{courseScore,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, 
+      #{courseName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.schoolmanager.entity.Sc" >
+    insert into sc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+      <if test="studentGrade != null" >
+        student_grade,
+      </if>
+      <if test="courseScore != null" >
+        course_score,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="courseName != null" >
+        course_name,
+      </if>
+      <if test="teacherName != null" >
+        teacher_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="studentGrade != null" >
+        #{studentGrade,jdbcType=INTEGER},
+      </if>
+      <if test="courseScore != null" >
+        #{courseScore,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseName != null" >
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherName != null" >
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.schoolmanager.entity.Sc" >
+    update sc
+    <set >
+      <if test="teacherId != null" >
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="studentGrade != null" >
+        student_grade = #{studentGrade,jdbcType=INTEGER},
+      </if>
+      <if test="courseScore != null" >
+        course_score = #{courseScore,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseName != null" >
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherName != null" >
+        teacher_name = #{teacherName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where student_id = #{studentId,jdbcType=INTEGER}
+      and course_id = #{courseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.schoolmanager.entity.Sc" >
+    update sc
+    set teacher_id = #{teacherId,jdbcType=INTEGER},
+      student_grade = #{studentGrade,jdbcType=INTEGER},
+      course_score = #{courseScore,jdbcType=VARCHAR},
+      student_name = #{studentName,jdbcType=VARCHAR},
+      course_name = #{courseName,jdbcType=VARCHAR},
+      teacher_name = #{teacherName,jdbcType=VARCHAR}
+    where student_id = #{studentId,jdbcType=INTEGER}
+      and course_id = #{courseId,jdbcType=INTEGER}
+  </update>
+</mapper>

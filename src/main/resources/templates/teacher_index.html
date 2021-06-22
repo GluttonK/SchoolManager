@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/media/image/favicon.png"/>
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="vendors/datepicker/daterangepicker.css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="vendors/slick/slick.css">
+    <link rel="stylesheet" href="vendors/slick/slick-theme.css">
+
+    <!-- Vmap -->
+    <link rel="stylesheet" href="vendors/vmap/jqvmap.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="assets/css/app.min.css" type="text/css">
+
+    <!-- vue ajax -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+
+<body>
+
+<div class="navigation">
+	
+    <header class="navigation-header">
+        <figure class="avatar avatar-state-success">
+            <img src="assets/media/image/user/man_avatar3.jpg" class="rounded-circle" alt="image">
+        </figure>
+        <div>
+            <h5>教师姓名</h5>
+            <p class="text-muted">教师院系</p>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="profile.html" class="btn nav-link bg-info-bright" title="Profile" data-toggle="tooltip">
+                        <i data-feather="user"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="btn nav-link bg-success-bright" title="Settings" data-toggle="tooltip">
+                        <i data-feather="settings"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="btn nav-link bg-danger-bright" title="Logout" data-toggle="tooltip">
+                        <i data-feather="log-out"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="navigation-menu-body">
+        <ul>
+            <li>
+                <a href="teacher_index">
+                    <i class="nav-link-icon" data-feather="mail"></i>
+                    <span>教师中心</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+	
+</div>
+
+<div id="app">
+    <div class="header">
+		<h4>教师中心</h4>
+    </div>
+
+    <!-- begin::main-content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h4>课程中心</h4>
+				
+					<div>
+						<div class="table-responsive">
+							<table class="table table-hover mb-0">
+								<thead class="thead-light">
+								<tr>
+                                    <th>课程id</th>
+									<th>课程名</th>
+									<th>学分</th>
+                                    <th>管理操作</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr v-for="sc in scs">
+									<td>{{sc.courseId}}</td>
+									<td>{{sc.courseName}}</td>
+									<td>{{sc.courseScore}}</td>
+                                    <td>
+                                        <button @click="getClassByCourse(sc.courseId)"
+                                                ref="btnSelect" class="btn nav-link bg-success-bright">
+                                            <i aria-hidden="true"
+                                               >查看班级</i>
+                                        </button>
+                                    </td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+            </div>
+        </div>
+    </div>
+    <!--模态框-->
+    <div class="modal fade" id="updateCourse">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h3 class="modal-title">修改课程</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+
+                <div class="modal-body">
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">课程名称</span>
+                        </div>
+                        <input type="text" v-model="course_name" class="form-control" id="usr" name="username">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">课程学分</span>
+                        </div>
+                        <input type="text" v-model="course_score" class="form-control" id="usr" name="username">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">授课教师id</span>
+                        </div>
+                        <input type="text" v-model="teacher_id" class="form-control" id="usr" name="username">
+                    </div>
+
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="updateCourse(current_course)">
+                        保存
+                    </button>
+                    <button type="button" class="btn btn-secondary " data-dismiss="modal" @click="current_course = null">取消</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--模态框end-->
+</div>
+
+
+
+
+
+
+
+
+<script>
+	var vue = new Vue({
+		el:"#app",
+		data:{
+			courses: {},
+            course:{},
+            scs:{},
+            sc:{},
+            course_name:null,
+            course_score:null,
+            teacher_id:null,
+            current_course:null,
+			
+
+		},
+
+        mounted: function () {
+            this.getTeacherCourse();
+        },
+
+		methods:{
+			$:function(id){
+				return document.getElementById(id);
+			},
+			refresh:function(){
+				this.$forceUpdate();
+			},
+
+            getTeacherCourse:function(){
+				axios
+						.get('http://localhost:8080/teacher_index/getTeacherCourse')
+						.then(response =>{
+							//清空课程集合对象
+							//this.courses=null;
+							//取响应数据赋值给vue对象中的对象
+							this.scs=response.data.scs;
+						})
+						.catch(function (error) { // 请求失败处理
+							console.log(error);
+						});
+			},
+
+
+            getClassByCourse:function(id){
+                const formdata=new FormData();
+                // formdata.append("course_id",this.course_id);
+                formdata.append("course_id",id);
+                axios
+                    .post('http://localhost:8080/teacher_index/getClassByCourse', formdata)
+                    .then(response =>{
+                        //清空课程集合对象
+                        //this.courses=null;
+                        //取响应数据赋值给vue对象中的对象
+
+                        if (response.data.result == 1) {
+                            alert("未获取course_id！");
+                        }  else {
+                            window.location = "http://localhost:8080/teacher_class";
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+
+
+
+
+        }
+	})
+</script>
+
+
+
+
+<!-- Plugin scripts -->
+<script src="vendors/bundle.js"></script>
+
+<!-- Chartjs -->
+<script src="vendors/charts/chartjs/chart.min.js"></script>
+
+<!-- Apex chart -->
+<script src="vendors/charts/apex/apexcharts.min.js"></script>
+
+<!-- Circle progress -->
+<script src="vendors/circle-progress/circle-progress.min.js"></script>
+
+<!-- Peity -->
+<script src="vendors/charts/peity/jquery.peity.min.js"></script>
+<script src="assets/js/examples/charts/peity.js"></script>
+
+<!-- Datepicker -->
+<script src="vendors/datepicker/daterangepicker.js"></script>
+
+<!-- Slick -->
+<script src="vendors/slick/slick.min.js"></script>
+
+<!-- Vamp -->
+<script src="vendors/vmap/jquery.vmap.min.js"></script>
+<script src="vendors/vmap/maps/jquery.vmap.usa.js"></script>
+<script src="assets/js/examples/vmap.js"></script>
+
+<!-- Dashboard scripts -->
+<script src="assets/js/examples/dashboard.js"></script>
+<div class="colors"> <!-- To use theme colors with Javascript -->
+    <div class="bg-primary"></div>
+    <div class="bg-primary-bright"></div>
+    <div class="bg-secondary"></div>
+    <div class="bg-secondary-bright"></div>
+    <div class="bg-info"></div>
+    <div class="bg-info-bright"></div>
+    <div class="bg-success"></div>
+    <div class="bg-success-bright"></div>
+    <div class="bg-danger"></div>
+    <div class="bg-danger-bright"></div>
+    <div class="bg-warning"></div>
+    <div class="bg-warning-bright"></div>
+</div>
+
+<!-- App scripts -->
+<script src="assets/js/app.min.js"></script>
+</body>
+</html>

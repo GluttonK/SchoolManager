@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+
+    <!-- vue ajax -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/media/image/favicon.png"/>
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="assets/css/app.min.css" type="text/css">
+	
+</head>
+<body class="form-membership">
+
+
+
+<div class="form-wrapper">
+
+    <!-- logo -->
+    <div id="logo">
+        <img class="logo" src="assets/media/image/logo.png" alt="image">
+        <img class="logo-dark" src="assets/media/image/logo-dark.png" alt="image">
+    </div>
+    <!-- ./ logo -->
+
+    <h5>Sign in</h5>
+    <div id="app">
+    <!-- form -->
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" v-model="admin_id" placeholder="UserName" required autofocus>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" v-model="admin_password" placeholder="Password" required>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" checked="" id="customCheck1">
+                <label class="custom-control-label" for="customCheck1">Remember me</label>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block" @click="login">Sign in</button>
+        <hr>
+        
+        
+        
+
+    </form>
+    <!-- ./ form -->
+    </div>
+
+</div>
+
+<!-- Plugin scripts -->
+<script src="vendors/bundle.js"></script>
+
+<!-- App scripts -->
+<script src="assets/js/app.min.js"></script>
+</body>
+</html>
+
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            admin_id: null,
+            admin_password: null,
+            email:null,
+        },
+        methods: {
+            login: function (e) {
+                e.preventDefault();
+
+                const formDate = new FormData();
+                formDate.append("admin_id", this.admin_id);
+                formDate.append("admin_password", this.admin_password);
+
+                axios
+                    .post('http://localhost:8080/admin_login', formDate)
+                    .then(response => {
+                        if (response.data.result == 1) {
+                            alert("用户名或密码错误！");
+                        }  else {
+                            window.location = "http://localhost:8080/admin_index";
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        },
+    })
+</script>
